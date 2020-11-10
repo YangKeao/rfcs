@@ -2,22 +2,24 @@
 
 ## Summary
 
-A built-in workflow engine with frontend support is needed for Chaos Mesh. 
+A built-in workflow engine with frontend support is needed for Chaos Mesh.
 
 ## Motivation
 
-Both running chaos experiments parallelly or sequentially are important for simulating
-production errors. Chaos Mesh is shipped with a feature-rich chaos toolbox. Composing 
-them together can make it much more powerful. With a workflow engine, an experiment 
-can turn from single chaos into a series of chaos with some external logic (like 
-checking health).
+Both running chaos experiments parallelly or sequentially are important for
+simulating production errors. Chaos Mesh is shipped with a feature-rich chaos
+toolbox. Composing them together can make it much more powerful. With a workflow
+engine, an experiment can turn from single chaos into a series of chaos with
+some external logic (like checking health).
 
-Previously, the `duration` and `scheduler` fields have enabled a very fundamental "workflow"
-feature, so after implementing the workflow engine, these fields should be deprecated.
+Previously, the `duration` and `scheduler` fields have enabled a very
+fundamental "workflow" feature, so after implementing the workflow engine, these
+fields should be deprecated.
 
 ## Detailed design
 
-The specification for a `Workflow` custom resource can be concluded in the following example:
+The specification for a `Workflow` custom resource can be concluded in the
+following example:
 
 ```yaml
 spec:
@@ -85,8 +87,8 @@ The following document will describe all these different kinds of `template`.
 
 They are the same with the specification of already defined `*Chaos` types
 without `scheduler` field. When running into this part, the workflow engine
-should create a `*Chaos` resource, and delete it after the duration. If it deletes
-the resource successfully, this step finishes and continues.
+should create a `*Chaos` resource, and delete it after the duration. If it
+deletes the resource successfully, this step finishes and continues.
 
 The created `*Chaos` resource should be a "common chaos", as Chaos Mesh doesn't
 support to set duration without a scheduler.
@@ -123,18 +125,18 @@ Combining `Parallel` and `Serial` can provide a powerful expression in task
 combination. However, as it can only represent series-parallel graph, it's still
 a subset of `dag`.
 
-And the `duration` field of these tasks should work as a deadline (for `Serial`
+The `duration` field of these tasks should work as a deadline (for `Serial`
 and `Parallel` tasks) or as a time specification (for `Suspend`)
 
 ### Implementation references
 
 `Argo` is a really great workflow engine with a workflow definition. It is a
-guideline for us to design and implement this feature. 
+guideline for us to design and implement this feature.
 
 #### Reconciler logic
 
 We should manage "nodes" in status and the reconciler should act like a state
-machine for these "nodes". 
+machine for these "nodes".
 
 Creating nodes could have side-effects, such as creating containers or creating
 chaos mesh resources. But updating phase (in reconciler of `Workflow`) should be
