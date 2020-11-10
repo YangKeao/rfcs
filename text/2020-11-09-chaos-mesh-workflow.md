@@ -119,7 +119,10 @@ For a `Suspend` task, the engine should do nothing. After a period of time
 workflow. In this step, the users can setup a container (with Kubernetes's pod)
 to run their own process. This step finishes once the pod turns into
 `PodSucceeded` phase. The description of the task could be more complicated with
-more fields if needed in the future.
+more fields if needed in the future. Every branch under the `branch` field will
+run parallelly iff the `when` expression returns true. There will be a lot of
+variables provided by the engine to use in the `when` expression, such as
+`stdout`, `stderr`...
 
 Combining `Parallel` and `Serial` can provide a powerful expression in task
 combination. However, as it can only represent series-parallel graph, it's still
