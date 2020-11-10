@@ -125,8 +125,8 @@ Combining `Parallel` and `Serial` can provide a powerful expression in task
 combination. However, as it can only represent series-parallel graph, it's still
 a subset of `dag`.
 
-The `duration` field of these tasks should work as a deadline (for `Serial`
-and `Parallel` tasks) or as a time specification (for `Suspend`)
+The `duration` field of these tasks should work as a deadline (for `Serial` and
+`Parallel` tasks) or as a time specification (for `Suspend`)
 
 ### Implementation references
 
@@ -136,7 +136,16 @@ guideline for us to design and implement this feature.
 #### Reconciler logic
 
 We should manage "nodes" in status and the reconciler should act like a state
-machine for these "nodes".
+machine for these "nodes". e.g.
+
+```yaml
+- nodeName: xxxxx
+  type: Container
+  phase: Running
+- nodeName: xxxxx
+  type: ParallelTask
+  phase: Succeeded
+```
 
 Creating nodes could have side-effects, such as creating containers or creating
 chaos mesh resources. But updating phase (in reconciler of `Workflow`) should be
