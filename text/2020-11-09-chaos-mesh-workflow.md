@@ -58,11 +58,11 @@ spec:
     branch:
     - when: "stdout == 'continue'"
       ref: serial-chaos
-    - when: “stdout == ‘continue’”
+    - when: "stdout == 'continue'"
       ref: serial-chaos
   - name: serial-chaos
     type: Serial
-    duration: "30m"
+    deadline: "30m"
     tasks:
     - ref: networkchaos
     - ref: iochaos
@@ -100,11 +100,20 @@ which could be a reference to a template (by name), or an inline template.
 You can find an example of the inline template in the `Suspend` task of
 `serial-chaos`.
 
+If the `deadline` field is set, all the running child task will be killed and
+turn into `DeadlineExceeded` status.
+
 #### `Serial`
 
 For a `Serial` task, the engine should run these tasks one by one. It enters the
 next step iff the former one succeeded. After all these steps finished, this
 task turns into the finished phase.
+
+If one of the tasks failed or exceeded the deadline, the following task will not
+run and the current task will turn into the corresponding status directly.
+
+If the `deadline` field is set, all the running child task will be killed and
+turn into `DeadlineExceeded` status.
 
 #### `Suspend`
 
@@ -125,9 +134,6 @@ variables provided by the engine to use in the `when` expression, such as
 Combining `Parallel` and `Serial` can provide a powerful expression in task
 combination. However, as it can only represent series-parallel graph, it's still
 a subset of `dag`.
-
-The `duration` field of these tasks should work as a deadline (for `Serial` and
-`Parallel` tasks) or as a time specification (for `Suspend`)
 
 ### Cronjob
 
