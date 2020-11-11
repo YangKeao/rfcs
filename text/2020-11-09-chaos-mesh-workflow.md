@@ -23,7 +23,6 @@ following example:
 
 ```yaml
 spec:
-  cron: "..."
   entry: serial-chaos
   templates:
   - name: networkchaos
@@ -134,10 +133,27 @@ The `duration` field of these tasks should work as a deadline (for `Serial` and
 
 It has been proved to be a bad idea to manage the running logic and cron
 scheduler in the same resource. From the practice in Chaos Mesh 0.x and 1.x,
-managing a "twophase" scheduler is really complicated and full of bugs. In the
-implementation of `Workflow`, a `Workflow` with `cron` field should manage (or
-reference) a lot of standalone `Workflow` objects without `cron` field. The
-`cron` field will only trigger the creation of a new `Workflow`.
+managing a "twophase" scheduler is really complicated and full of bugs. As the
+status between a `CronWorkflow` and a normal `Workflow` could be much different,
+we will split them into two CRD. Here is an example of the spec of
+`CronWorkflow`:
+
+```yaml
+spec:
+  cron: "... ... ..."
+  entry: networkchaos
+  templates:
+  - name: networkchaos
+    type: NetworkChaos
+    duration: "30m"
+    selector:
+      labelSelectors:
+        "component": "tikv"
+    delay:
+      latency: "90ms"
+      correlation: "25"
+      jitter: "90ms"
+```
 
 ### Implementation references
 
