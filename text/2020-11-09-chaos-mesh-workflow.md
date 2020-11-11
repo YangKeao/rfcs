@@ -29,14 +29,13 @@ spec:
   - name: networkchaos
     type: NetworkChaos
     duration: "30m"
-    spec:
-      selector:
+    selector:
       labelSelectors:
         "component": "tikv"
-      delay:
-        latency: "90ms"
-        correlation: "25"
-        jitter: "90ms"
+    delay:
+      latency: "90ms"
+      correlation: "25"
+      jitter: "90ms"
   - name: iochaos
     type: IOChaos
     duration: "10m"
