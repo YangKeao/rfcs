@@ -131,6 +131,15 @@ a subset of `dag`.
 The `duration` field of these tasks should work as a deadline (for `Serial` and
 `Parallel` tasks) or as a time specification (for `Suspend`)
 
+### Cronjob
+
+It has been proved to be a bad idea to manage the running logic and cron
+scheduler in the same resource. From the practice in Chaos Mesh 0.x and 1.x,
+managing a "twophase" scheduler is really complicated and full of bugs. In the
+implementation of `Workflow`, a `Workflow` with `cron` field should manage (or
+reference) a lot of standalone `Workflow` objects without `cron` field. The
+`cron` field will only trigger the creation of a new `Workflow`.
+
 ### Implementation references
 
 `Argo` is a really great workflow engine with a workflow definition. It is a
