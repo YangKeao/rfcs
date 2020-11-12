@@ -142,6 +142,9 @@ the heart of a workflow engine. Here is an example:
 
 ```yaml
 status:
+  finishedAt: null
+  startedAt: Thu, 05 Nov 2020 14:23:25 +0800
+  phase: Running
   nodes:
   - name: entry
     displayName: serial-chaos
@@ -163,6 +166,7 @@ status:
     displayName: networkchaos
     type: NetworkChaos
     startTime: Thu, 05 Nov 2020 14:23:25 +0800
+    finishedAt: Thu, 05 Nov 2020 14:33:25 +0800
     duration: 10m
     phase: Succeeded
     spec:
