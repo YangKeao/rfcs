@@ -147,8 +147,8 @@ status:
     displayName: serial-chaos
     type: Serial
     children:
-    - serial-chaos[0]
-    - serial-chaos[1]
+    - entry[0]
+    - entry[1]
     startTime: Thu, 05 Nov 2020 14:23:25 +0800
     deadline: 50m
     phase: Running
@@ -179,6 +179,9 @@ status:
     startTime: Thu, 05 Nov 2020 14:33:25 +0800
     deadline: 10m
     phase: Running
+    children:
+    - entry[1][0]
+    - entry[1][1]
     spec:
     - ref: networkchaos
     - ref: iochaos
