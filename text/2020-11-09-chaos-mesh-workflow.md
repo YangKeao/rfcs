@@ -131,6 +131,9 @@ run parallelly iff the `when` expression returns true. There will be a lot of
 variables provided by the engine to use in the `when` expression, such as
 `stdout`, `stderr`...
 
+We will provide something like "Downward API" that makes users' processes could see
+status of workflow. So users could make any conditions based on workflow status.
+
 Combining `Parallel` and `Serial` can provide a powerful expression in task
 combination. However, as it can only represent series-parallel graph, it's still
 a subset of `dag`.
